@@ -24,4 +24,12 @@ func main() {
 	fmt.Fprintf(os.Stdout, "server url is %s", ts.URL)
 	time.Sleep(time.Duration(keepAliveMins) * time.Minute)
 	defer ts.Close()
+
+	// Another simple http server with predefined port number
+	http.HandleFunc("/", handler)
+	http.ListenAndServe(":9999", nil)
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
 }
